@@ -3,7 +3,7 @@ using Images
 using ImageView
 
 
-img = imread("/home/elsuizo/Imagenes/lyapunov.jpg")
+img = imread("/home/elsuizo/Images/12096.jpg")
 #imgc, imgslice = view(img);
 
 c = canvasgrid(2,2)

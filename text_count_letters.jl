@@ -1,21 +1,24 @@
 
 function count_letters(T)
 
-    vec = zeros(256)
     counter = 0
-    letters = [0x00:0xff]
+    letters = 0x00:0xff
+    set = unique(T.data)
+    d = Dict()
     
-    for i in 1:length(T)
+    for letter in set
         counter = 0
-        for letter in letters
-            if(T.data[i] == letter )
+        for i in 1:length(T.data)
+            if(letter == T.data[i] )
+                
                 counter += 1
+                
+                d[letter] = counter
             end
         end
-        vec[i] = counter
     end
 
-    return vec
+    return d
 
 end
 
