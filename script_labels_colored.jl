@@ -45,5 +45,8 @@ manos_bin = ImageProcessing.RGB_threshold(img1, c, s)
 #manos_bin = erode(manos_bin) 
 manos_label = label_components(manos_bin)
 println(maximum(manos_label))
+manos_colored = ImageProcessing.colored_labels(manos_label)
+view(img1)
 view(manos_bin')
+view(manos_colored')
 
