@@ -1,7 +1,7 @@
 using Tk
 using Images
 using ImageView
-
+using PyPlot
 
 img = imread("/home/elsuizo/Images/12096.jpg")
 #imgc, imgslice = view(img);
