@@ -1,7 +1,7 @@
 #= -------------------------------------------------------------------------
-# @file rosette.jl
+# @file cornus_spiral.jl
 #
-# @date 11/12/15 11:42:45
+# @date 03/23/16 12:20:07
 # @author Martin Noblia
 # @email martin.noblia@openmailbox.org
 #
@@ -23,17 +23,17 @@
 # You should have received a copy of the GNU General Public License
 
 ---------------------------------------------------------------------------=#
-using Images
 using PyPlot
-# Rosette in cartesian coordinates
-#=------------------------------------------------------------------------------
-                        Rosette Functions
-------------------------------------------------------------------------------=#
-x(t, ρ=100, f₁=100, f₂=200) = (ρ/2) * (cos(f₁*t) + cos(f₂*t))
-y(t, ρ=100, f₁=100, f₂=200) = (ρ/2) * (sin(f₁*t) - sin(f₂*t))
-#=------------------------------------------------------------------------------
-                        Plots
-------------------------------------------------------------------------------=#
-t = linspace(0,4π, 200) # time samples = 200
 
-plot(x(t), y(t))
+f(x) = cos((π * x^2 )/2)
+g(x) = sin((π * x^2 )/2)
+
+x(t) = quadgk(f, 0, t)
+y(t) = quadgk(g, 0, t)
+
+X = [x(t)[1] for t in -7:.01:7]
+Y = [y(t)[1] for t in -7:.01:7]
+
+plot(X, Y)
+
+

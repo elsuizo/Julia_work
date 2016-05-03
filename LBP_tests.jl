@@ -1,12 +1,12 @@
 #= -------------------------------------------------------------------------
-# @file rosette.jl
+# @file LBP_tests.jl
 #
-# @date 11/12/15 11:42:45
+# @date 12/01/15 22:11:01
 # @author Martin Noblia
 # @email martin.noblia@openmailbox.org
 #
 # @brief
-#
+# Local Binary Pattern tests
 # @detail
 #
   Licence:
@@ -23,17 +23,22 @@
 # You should have received a copy of the GNU General Public License
 
 ---------------------------------------------------------------------------=#
-using Images
-using PyPlot
-# Rosette in cartesian coordinates
-#=------------------------------------------------------------------------------
-                        Rosette Functions
-------------------------------------------------------------------------------=#
-x(t, ρ=100, f₁=100, f₂=200) = (ρ/2) * (cos(f₁*t) + cos(f₂*t))
-y(t, ρ=100, f₁=100, f₂=200) = (ρ/2) * (sin(f₁*t) - sin(f₂*t))
-#=------------------------------------------------------------------------------
-                        Plots
-------------------------------------------------------------------------------=#
-t = linspace(0,4π, 200) # time samples = 200
 
-plot(x(t), y(t))
+using Images, ImageView, Colors
+
+path = "/home/elsuizo/images/flor.jpeg"
+path2 = "/home/elsuizo/images/baboon.jpg"
+img = load(path2)
+img_gray = convert(Image{Gray}, img)
+M, N = size(img_gray)
+bin_p = [2^7, 2^6, 2^5, 2^4, 2^3, 2^2, 2^1, 2^0]
+img_LBP = zeros(M,N)
+for j in 2:N-1
+    for i in 2:M-1
+        p = img_gray[i, j]
+        binary = p .> img_gray[i-1:i+1, j-1:j+1]
+        img_LBP[i, j] = sum(deleteat!(binary[:], 5) .* bin_p) / 255 
+    end
+end
+view(img_LBP')
+
