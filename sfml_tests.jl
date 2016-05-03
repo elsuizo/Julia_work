@@ -6,7 +6,7 @@
 # @email martin.noblia@openmailbox.org
 #
 # @brief
-#
+# move a line with the arrows keys (right, left, up, down)
 # @detail
 #
   Licence:
@@ -42,6 +42,9 @@ set_position(rect, Vector2f(400, 300))
 
 direction = 0
 moving = false
+in_y = false
+in_x = false
+
 while isopen(window)
     # check for events
     while pollevent(window, event)
@@ -49,21 +52,52 @@ while isopen(window)
         if get_type(event) == EventType.CLOSED
             close(window)
         end
-        # move right 
+        # move left
         if get_type(event) == EventType.KEY_PRESSED
             if get_key(event).key_code == KeyCode.LEFT
                 moving = true
                 direction = -1
+                in_x = true
+            end
+        end
+        # move right
+        if get_type(event) == EventType.KEY_PRESSED
+            if get_key(event).key_code == KeyCode.RIGHT
+                moving = true
+                direction = 1
+                in_x = true
+            end
+        end
+        # move up
+        if get_type(event) == EventType.KEY_PRESSED
+            if get_key(event).key_code == KeyCode.DOWN
+                moving = true
+                direction = 1
+                in_y = true
+            end
+        end
+        # move down
+        if get_type(event) == EventType.KEY_PRESSED
+            if get_key(event).key_code == KeyCode.UP
+                moving = true
+                direction = -1
+                in_y = true
             end
         end
         
     end
-    if moving
-        set_position(rect, Vector2f(1*direction,0))
+    if moving && in_x
+        move(rect, Vector2f(1*direction,0))
     end
+    if moving && in_y
+        move(rect, Vector2f(0, 1*direction))
+    end
+
     clear(window, SFML.black)
     draw(window, rect)
     display(window)
     moving = false
+    in_y = false
+    in_x = false
 end
 
