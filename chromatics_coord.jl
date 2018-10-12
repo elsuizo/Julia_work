@@ -32,8 +32,8 @@ function chromatics_coord(img::AbstractArray)
     a = zeros(img)
     for i in 1:x
         for j in 1:y
-            r = img[i, j].r 
-            g = img[i, j].g 
+            r = img[i, j].r
+            g = img[i, j].g
             b = img[i, j].b
             s = r + g + b
             a[i, j] = RGB(r / s, g / s, b / s)
