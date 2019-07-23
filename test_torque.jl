@@ -1,7 +1,7 @@
 #= -------------------------------------------------------------------------
-# @file trajectoria_misil.jl
+# @file test_torque.jl
 #
-# @date 10/12/18 11:41:36
+# @date 10/29/18 11:29:51
 # @author Martin Noblia
 # @email mnoblia@disroot.org
 #
@@ -23,29 +23,9 @@
 # You should have received a copy of the GNU General Public License
 
 ---------------------------------------------------------------------------=#
-# includes
-using Luxor, Colors
+using Plots
+x = 1:10; y = rand(10)
+plot(x, y)
+#= f(α, μ) = (sin(α) + μ * cos(α)) / (cos(α) - μ * sin(α)) =#
 
-@png begin
-   offset = 200
-   A = Point(-offset, 0)
-   B = Point(offset, 0)
-   setdash("dot")
-   sethue("red")
-   line(A, B, :stroke)
-   # ponemos nombre y dibujamos a A
-   label("O", :N, A)
-   sethue("black")
-   circle(A, 3, :fill) # marcamos el punto
-   # dibujamos las circunferencias
-   radius = 50
-   radius_circles = [x for x in radius:radius:5radius]
-   circle.(A, radius_circles, :stroke)
-   setdash("solid")
-   for θ in 0:π/3:2π
-      aux = polar.(5radius, θ)
-      println(θ)
-      sethue("red")
-      line(A, aux, :stroke)
-   end
-end
+

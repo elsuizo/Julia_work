@@ -1,7 +1,7 @@
 #= -------------------------------------------------------------------------
-# @file trajectoria_misil.jl
+# @file makie_example_arrows3d.jl
 #
-# @date 10/12/18 11:41:36
+# @date 04/08/19 10:49:53
 # @author Martin Noblia
 # @email mnoblia@disroot.org
 #
@@ -23,29 +23,21 @@
 # You should have received a copy of the GNU General Public License
 
 ---------------------------------------------------------------------------=#
-# includes
-using Luxor, Colors
+using Makie
+using LinearAlgebra
 
-@png begin
-   offset = 200
-   A = Point(-offset, 0)
-   B = Point(offset, 0)
-   setdash("dot")
-   sethue("red")
-   line(A, B, :stroke)
-   # ponemos nombre y dibujamos a A
-   label("O", :N, A)
-   sethue("black")
-   circle(A, 3, :fill) # marcamos el punto
-   # dibujamos las circunferencias
-   radius = 50
-   radius_circles = [x for x in radius:radius:5radius]
-   circle.(A, radius_circles, :stroke)
-   setdash("solid")
-   for θ in 0:π/3:2π
-      aux = polar.(5radius, θ)
-      println(θ)
-      sethue("red")
-      line(A, aux, :stroke)
-   end
+function SphericalToCartesian(r::T, θ::T, ϕ::T) where T <: AbstractArray
+   x = @.r * sin(θ) * cos(ϕ)
+   y = @.r * sin(θ) * sin(ϕ)
+   z = @.r * cos(θ)
+   Point3f0.(x, y, z)
 end
+
+n = 100^2 #number of points to generate
+r = ones(n);
+θ = acos.(1 .- 2 .* rand(n))
+φ = 2π * rand(n)
+pts = SphericalToCartesian(r,θ,φ)
+arrows(pts, (normalize.(pts) .* 0.1f0), arrowsize = 0.02, linecolor = :green, arrowcolor = :darkblue)
+
+

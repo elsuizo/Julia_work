@@ -1,7 +1,7 @@
 #= -------------------------------------------------------------------------
-# @file trajectoria_misil.jl
+# @file makie_example_3d_countour_slices.jl
 #
-# @date 10/12/18 11:41:36
+# @date 06/14/19 10:42:18
 # @author Martin Noblia
 # @email mnoblia@disroot.org
 #
@@ -23,29 +23,22 @@
 # You should have received a copy of the GNU General Public License
 
 ---------------------------------------------------------------------------=#
-# includes
-using Luxor, Colors
+using AbstractPlotting
+using LinearAlgebra
 
-@png begin
-   offset = 200
-   A = Point(-offset, 0)
-   B = Point(offset, 0)
-   setdash("dot")
-   sethue("red")
-   line(A, B, :stroke)
-   # ponemos nombre y dibujamos a A
-   label("O", :N, A)
-   sethue("black")
-   circle(A, 3, :fill) # marcamos el punto
-   # dibujamos las circunferencias
-   radius = 50
-   radius_circles = [x for x in radius:radius:5radius]
-   circle.(A, radius_circles, :stroke)
-   setdash("solid")
-   for θ in 0:π/3:2π
-      aux = polar.(5radius, θ)
-      println(θ)
-      sethue("red")
-      line(A, aux, :stroke)
-   end
+function test(x, y, z)
+   xy = [x, y, z]
+   ((xy') * Matrix(I, 3, 3) * xy) / 20
 end
+x = range(-2pi, stop = 2pi, length = 100)
+scene = Scene()
+# c[4] == fourth argument of the above plotting command
+c = contour!(scene, x, x, x, test, levels = 6, alpha = 0.3, transparency = true)[end]
+xm, ym, zm = minimum(scene.limits[])
+contour!(scene, x, x, map(v-> v[1, :, :], c[4]), transformation = (:xy, zm), linewidth = 2)
+heatmap!(scene, x, x, map(v-> v[:, 1, :], c[4]), transformation = (:xz, ym))
+contour!(scene, x, x, map(v-> v[:, :, 1], c[4]), fillrange = true, transformation = (:yz, xm))
+# reorder plots for transparency
+scene.plots[:] = scene.plots[[1, 3, 4, 5, 2]]
+scene
+
